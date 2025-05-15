@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Курс валют НБУ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f3f3f3;
+            text-align: center;
+        }
+        #rate {
+            font-size: 24px;
+            color: #333;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            display: inline-block;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Курс долара США (USD) до гривні (UAH)</h1>
+    <div id="rate">Завантаження...</div>
+
+    <script>
+        fetch("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode=USD&json")
+            .then(response => response.json())
+            .then(data => {
+                const rate = data[0].rate;
+                const date = data[0].exchangedate;
+                document.getElementById("rate").textContent = `Курс: ${rate} грн (на ${date})`;
+            })
+            .catch(error => {
+                document.getElementById("rate").textContent = "Помилка отримання даних";
+                console.error("Помилка:", error);
+            });
+    </script>
+</body>
+</html>
